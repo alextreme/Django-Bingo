@@ -1,0 +1,14 @@
+{% extends "querybuilder/index.html" %}
+
+{% block content %}
+<p><strong>Add a Data Selection</strong></p>
+Step {{ step }} of {{ step_count }}
+<form method='POST'>
+<table>
+{{ form }}
+</table>
+<input type="hidden" name="{{ step_field }}" value="{{ step0 }}" />
+{{ previous_fields|safe }}
+<input type='submit' value='Submit' />
+</form>
+{% endblock %}

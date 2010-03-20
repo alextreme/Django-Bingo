@@ -1,0 +1,3 @@
+    var click_url = '{% ifequal mode 'view' %}{% url dashboard.views.view_element dashboard.id,elm.id %}{% else %}{% url dashboard.views.edit_element elm.id %}{% endifequal %}';
+    var url = '{% if dashboard %}{% url dashboard.views.data dashboard.id, elm.id %}{% else %}{% url dashboard.views.data elm.id %}{% endif %}';
+

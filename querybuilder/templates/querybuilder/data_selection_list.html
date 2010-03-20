@@ -1,0 +1,10 @@
+{% extends "querybuilder/index.html" %}
+
+{% block content %}
+<ul>
+{% for selection in selections %}
+ <li><a href='{% url edit_selection selection.id %}'>{{ selection }}</a></li>
+{% endfor %}
+</ul>
+<a href='{% url add_selection %}'>add selection</a>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends "querybuilder/index.html" %}
+
+{% block content %}
+<a href='{% url edit_selection selection.id %}/'>Back to selection {{ selection}}</a><br />
+<strong>Edit column {{ column }}</strong><br />
+<p>
+<form method="POST">
+<table>
+  {{ form.as_table }}
+</table>
+  <input type="submit" value="Submit" />
+</form>
+</p>
+<p>
+
+{% endblock %}

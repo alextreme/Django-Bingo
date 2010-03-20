@@ -1,0 +1,27 @@
+{% extends "dashboard/main.html" %}
+
+{% block content %}
+<strong>Adding new element</strong><br />
+
+<form method="POST">
+
+{% if form %}
+<table>
+ {{ form }}
+</table>
+<input type='hidden' name='element_type' value='{{ element_type }}' >
+{% else %}
+ <select name='element_type'>
+ {% for type in element_types %}
+  <option value='{{ type }}'>{{ type }}</option>
+ {% endfor %}
+ </select>
+{% endif %}
+  <input type="submit" value="Submit" />
+</form>
+</p>
+<div style='float: right;'
+<a href='/querybuilder/add_selection/'>Add Data Selection</a>
+</div>
+
+{% endblock %}

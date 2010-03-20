@@ -1,0 +1,18 @@
+{% for data_elm in data %}
+<div class='header'>
+<strong>Data</strong>
+</div>
+
+<div class='data_table'>
+<table>
+{% for data_row in data_elm %}
+<tr>
+ {% for data_cell in data_row %}
+   <td>{{ data_cell }}</td>
+ {% endfor %}
+</tr>
+{% endfor %}
+</table>
+
+</div>
+{% endfor %}

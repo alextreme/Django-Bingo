@@ -1,0 +1,44 @@
+<a href='/dashboard/view_data/{{dashboard.id}}/{{elm.id}}/'><div id="dashboard_graph_{{ elm.id}}" style="width: 600px; height: {% if elm.height %}{{elm.height}}px{%else%}200px{%endif%}; background: white;"></div></a>
+
+<script type="text/javascript">
+$('#tabs').bind('tabsshow', function(event, ui) {
+{% with elm.get_child as graph %}
+
+var options = { 
+
+  {% if graph.show_lines %}  lines: { show: true }, {% endif %}
+  {% if graph.show_points %} points: { show: true },{% endif %}
+  {% if graph.show_bars %}   bars: { show: true },  {% endif %}
+
+  {% ifequal graph.x_axis.get_child.get_type "datetime" %} xaxis: { mode: "time" }, {% endifequal %}
+        legend: { position: "nw" },
+{% comment %}
+    grid: { markings: [{ yaxis: { from: 10, to: 20 }, color: "#b8ffb8"}] },
+
+green: #e0ffe0
+
+{% endcomment %}
+  {% if graph.y_axis.get_thresholds %}
+    grid: { markings: [ 
+      {% for threshold in graph.y_axis.get_thresholds %}
+        { yaxis: { {% if threshold.thres_from %}from: {{ threshold.thres_from }},{% endif %}
+	         {% if threshold.thres_to %}to: {{ threshold.thres_to }},{% endif %}
+		 }, color: {% ifequal threshold.thres_level 0 %}"#ffffff"{% endifequal %}{% ifequal threshold.thres_level 1 %}"#f6ff79"{% endifequal %}{% ifequal threshold.thres_level 2 %}"#fe594d"{% endifequal %}
+	}
+     {% if not forloop.last %},{% endif %}{% endfor %}
+     ] },
+  {% endif %}
+{% comment %}
+{% endcomment %}
+    };
+
+{% endwith %}
+    try {
+      plot_graph($("#dashboard_graph_{{ elm.id }}"), [], '/dashboard/data/{{ dashboard.id }}/{{ elm.id }}.json', options, {{ elm.refresh_rate }}, {{ elm.id }});
+    }
+    catch (error){
+      // not on this tab
+    }
+    return true; // required for tabsselect, not sure if this is required for tabsshow though...
+});
+</script>

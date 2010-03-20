@@ -1,0 +1,30 @@
+{% extends "dashboard/main.html" %}
+
+{% block csscontent %}
+.dash_elm {
+  margin: 2px 2px 2px 2px;
+  padding: 2px 2px 2px 2px;
+  border: 1px dashed black;
+}
+.column_left, .column_right, .column_middle {
+  min-height: 30px;
+  border: 1px dashed black;
+}
+.two-column .column {
+  min-width: 600px;
+}
+.three-column .column {
+  min-width: 380px;
+}
+{% endblock %}
+
+{% block jscontent %}
+var design = true;
+
+$(function() { // Make the elements in each column sortable
+  $(".column").sortable({ connectWith: '.column', opacity: 0.6, cursor: 'move'});
+
+});
+
+{% endblock %}
+

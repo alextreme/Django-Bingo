@@ -1,0 +1,26 @@
+{% extends "querybuilder/index.html" %}
+
+{% block content %}
+<p><strong>Add a Data Column</strong></p>
+<form method='POST'>
+{% if not form %}
+
+<select name='column_type'>
+ {% for column_type in types %}
+   <option value='{{ column_type }}'>{{ column_type }}</option>
+ {% endfor %}
+</select>
+
+{% else %}
+
+ <table>
+  {{ form }}
+ </table>
+ {% if column_type %}
+  <input type='hidden' name='column_type' value='{{ column_type }}' />
+ {% endif %}
+{% endif %}
+
+<input type='submit' value='Submit' />
+</form>
+{% endblock %}

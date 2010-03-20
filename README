@@ -1,0 +1,120 @@
+
+Welcome to Django Bingo!
+
+Django Bingo is a collection of Django applications that together allows you to provide professional dashboards and 
+(in the future) other types of reporting to your users. It is licensed under the BSD license, the same as Django.
+
+Django Bingo isn't a full-blown "Business Intelligence" suite. Yet. It does allow you to plot your data into pretty
+graphs, which is probably what most people see as BI. ETL, Data warehousing? You'll have to roll your own for now!
+
+WARNING: This software is mostly a dump of ideas and code. It is neither neat nor secure. It might gobble up your kitten. 
+
+==== Install to an existing project ====
+
+ * Copy the following application directories to your project:
+
+  - querybuilder
+  - dashboard
+
+ * Copy the media/dashboard directory to your own media directory (ie. it should be accessable via settings.MEDIA_URL). 
+   This provides the various javascript libraries and css.
+
+ * Add 'querybuilder' and 'dashboard' to your INSTALLED_APPS in settings.py. Also add 'django.contrib.auth' if you haven't
+   yet done so as we use it for restricting access to your pretty dashboard.
+
+ * Add the following URLs to your top-level url.py:
+
+    (r'^querybuilder/', include('querybuilder.urls')),                       
+    (r'^dashboard/', include('dashboard.urls')),
+    (r'^accounts/login/$', 'django.contrib.auth.views.login'),
+    (r'^accounts/logout/$', 'django.contrib.auth.views.logout_then_login'),
+    (r'^accounts/profile/$', 'django.views.generic.simple.redirect_to', {'url': '/'}),
+
+ * You can now access the Django Bingo dashboard:
+
+    www.mydjangoinstall.com/dashboard/
+
+ * By default you need to be logged in to view the dashboard. To enter design-mode and modify the dashboard you require
+   a superuser account. In the future we'll do this via auth.permissions.
+
+==== Use Django Bingo as a separate project ====
+
+You might have noticed that Django Bingo includes a project of its own. This allows you to try out Django Bingo
+directly, without having to install it to your existing project.
+
+To use this project, either run python manage.py runserver or modify your web server to run Django Bingo via django.wsgi.
+You will have to do a python manage.py syncdb first to initialize an SQLite database.
+
+The following simple applications are provided so you can experiment right away:
+
+  Ping - pings a number of hosts in a round-robin fashion and stores the responses. 
+	 Add hosts to PingHosts via /admin/ping
+	 To run: 'python action_daemon_ping.py'
+
+  Status - stores various system status data
+	 To run: 'python action_daemon_status.py'
+
+You will need to run one of these scripts for a while to collect a bit of data. Plotting an empty database isn't fun.
+You might need to modify the provided settings.py for your environment, YMMV. 
+
+In the future we'll provide a pre-configured dashboard for both applications. For now, these are merely useful for
+generating test-data.
+
+Note: run do_env.sh to set up the 'env' virtualenv directory, very useful if you require multiple versions of Python
+libraries. 
+
+==== Setting up a dashboard automagically ====
+
+The easiest way is to enter design-mode, add a dashboard and initialize it using the 
+"Initialize dashboard from application" button. This provides a simple wizard to auto-configure a number of graphs
+and tables for a selection of models. It probably isn't what you want, but it does set up a number of queries via
+the Query Builder and hooks these up to elements in the Dashboard application. See it as a starting point for now.
+
+==== Dashboard design mode ====
+
+Drag-and-drop elements and hit 'Apply layout' to change your dashboard.
+
+'Add element' to create a new Graph or Table. You'll probably need to set up a Data Selection for this element first.
+
+Use the 'edit' link below each element to modify the element and its underlying Data Selection. 
+
+==== Excel output ====
+
+Included in contrib is the excellent xlwt library. Install it if you want Excel output, see querybuilder/excel.py for
+details.
+
+== Background ==
+
+==== Query builder ====
+
+The query builder application is used to set up queries (DataSelection objects) with which you can retrieve QuerySets
+from other Django applications. It works without having to write any code, the configuration of a query is stored
+directly in the database. 
+
+Each DataSelection has a number of DataColumns. These are usually auto-generated from your Django application by
+introspecting the models, but you can also specify your own (if you want). By calling 'get_data()' on your DataSelection
+you obtain the QuerySet you specified.
+
+You might have a Manager that you would like to use for your model. Query builder doesn't introspect Managers yet, but
+if you specify a 'manager_method' for a DataSelection it will be used instead of 'Model.objects.all()'. In the future
+query builder will become even smarter, for instance by allowing you to query databases without requiring a Django 
+application associated to it.
+
+==== Dashboard ====
+
+The dashboard application uses Query Builder for generating graphs and tables. Various options are available for both
+types of elements, and periodically refreshing elements is also possible. The Table element currently also provides
+embedded mini-graphs, providing you with sparklines and barplots within a table.
+
+In the future more types of elements will be available. 
+
+== Further details ==
+
+See docs for an overview and screenshots!
+
+Contact me via email (alex-bingo at aperte dot nl) or check out aperte-it.com (my company website) and alextreme.org.
+
+
+
+
+

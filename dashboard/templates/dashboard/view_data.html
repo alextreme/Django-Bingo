@@ -1,0 +1,14 @@
+{% extends "dashboard/index.html" %}
+
+{% block content %}
+<strong>{{ element }}</strong>
+{% if element.get_data_selections %}
+<p><a href='{% url export_selection element.get_data_selections.0.id %}'>Export to Excel</a></p>
+{% endif %}
+<p><a href='{% url dashboard.views.data dashboard.id,element.id %}'>Export to JSON</a></p>
+
+{% with element as elm %}
+  {% include elm.get_template_name %}
+{% endwith %}
+
+{% endblock %}

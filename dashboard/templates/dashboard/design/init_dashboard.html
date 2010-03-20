@@ -1,0 +1,28 @@
+{% extends "dashboard/main.html" %}
+
+{% block content %}
+{% comment %} Should turn this into a FormWizard or something... {% endcomment %}
+
+<p><strong>Initializing {{ dashboard }}</strong></p>
+<form method='POST'>
+{% if not app %}
+(Step 1) Pick the application you would like to use in your dashboard:
+<ul>
+{% for app in apps %}
+ <li><label for="radio_{{app}}">{{ app }}</label> <input id="radio_{{ app }}" type="radio" value="{{ app }}" name="app" /></li>
+{% endfor %}
+</ul>
+{% else %}
+<input type="hidden" name="app" value="{{ app }}" />
+(Step 2) Pick the models you would like to add to your dashboard:
+<ul>
+{% for model in models %}
+   <li><label for="checkbox_{{model.name}}">{{ model.name }}</label> <input id="checkbox_{{ model.name }}" type="checkbox" value="{{ model.name }}" name="model" {% if model.mta %}checked='checked'{% endif %}/></li>
+{% endfor %}
+</ul>
+<p>(Models with more objects than others are pre-selected)</p>
+{% endif %}
+
+<input type='submit' value='Continue' />
+</form>
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends "dashboard/main.html" %}
+
+{% block content %}
+<a href='/dashboard/design/'>Back to dashboard-design</a><br />
+<strong>Edit element {{ element }}</strong><br />
+
+<div id="edit_element_tabs" class='ui-tabs'>
+<ul>
+<li id='edit_element_form_tab'><a href='#edit_element_form'><span>Element form</span></a></li>
+<li id='edit_element_data_tab'><a href='#edit_element_data'><span>Element data selections</span></a></li>
+<li id='edit_element_view_tab'><a href='#edit_element_view'><span>Element view</span></a></li>
+{% ifequal element.get_type "table" %}
+  <li id='edit_table_columns_tab'><a href='#edit_table_columns'><span>Table columns</span></a></li>
+{% endifequal %}
+</ul>
+
+<div id='edit_element_form'>
+<form method="POST">
+<table>
+  {{ form.as_table }}
+</table>
+  <input type="submit" value="Submit" />
+</form>
+</div>
+
+<div id='edit_element_data'>
+<ul>
+{% for data in element.get_child.data.all %}
+<li>{{ data }} <a href='/querybuilder/edit_selection/{{ data.id }}/'>edit</a></li>
+{% endfor %}
+</ul>
+</div>
+
+<div id='edit_element_view'>
+<ul>
+<li>JSON: <a href='{% url json_data element.id %}'>{{ element }}</a></li>
+<li><a href='#' onclick='show_element_{{ element.id }}(); return false;'>Refresh element</a>
+</ul>
+{% with element as elm %}
+   {% include elm.get_template_name %}
+{% endwith %}
+</div>
+
+{% ifequal element.get_type "table" %}
+<div id='edit_table_columns'>
+ <ul>
+  {% for tablecolumn in element.get_child.column_elements.all %}
+  <li><a href='{% url edit_tablecolumn element.id,tablecolumn.id %}'>{{ tablecolumn }}</a> <a href='{% url delete_tablecolumn tablecolumn.id %}'>(delete)</a></li>
+  {% endfor %}
+ </ul>
+ <a href='{% url add_tablecolumn element.id %}'>Add table column</a>
+</div>
+{% endifequal %}
+
+</div> {% comment %} end tabs {% endcomment %}
+
+<script type="text/javascript">
+$(function() { 
+  $("#edit_element_tabs").tabs(); 
+});
+</script>
+
+{% endblock %}

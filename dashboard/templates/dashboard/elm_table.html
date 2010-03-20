@@ -1,0 +1,39 @@
+<div id="dashboard_table_{{ elm.id}}" class="dashboard_table" style="{% if elm.height %}height: {{elm.height}}px;{% endif %}background: white; width: {% if dashboard %}{{ dashboard.get_element_width }}px{%else%}100%{%endif%}">
+
+<table class='tablesorter'>
+<thead>
+<tr>
+{% if elm.get_child.count_series %}
+ <th>Model name</th><th>Number of objects</th>
+{% else %}
+ {% for column in elm.get_child.column_elements.all %}
+  <th>{{ column.name }}</th>
+ {% endfor %}
+{% endif %}
+</tr>
+</thead>
+<tbody>
+</tbody>
+
+</table>
+
+<script type="text/javascript">
+
+{% include "dashboard/js_elm_setup.html" %}
+
+function show_element_{{ elm.id }}() {
+  show_table_{{ elm.id }}();
+}
+
+function show_table_{{ elm.id }}() {
+    $("#dashboard_table_{{ elm.id }}").tablesorter();
+    {% include "dashboard/js_elm_urls.html" %}
+    $("#dashboard_table_{{ elm.id }}").click(function() { location.href = click_url });
+
+    load_table($("#dashboard_table_{{ elm.id }}"), url, {{ elm.refresh_rate }}, {{elm.id}});
+}
+
+</script>
+
+
+</div>

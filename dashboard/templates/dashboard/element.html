@@ -1,0 +1,9 @@
+{% if elm.active or design %}
+<li id='element_{{ elm.id }}' class='dash_elm'>
+ <div class='dash_elm_title'>{{ elm.name }}{% if not elm.active %} (HIDDEN) {% endif %}</div>
+ <div class='dash_elm_content'>
+ {% if elm.active %} {% include elm.get_template_name %} {% endif %}
+ {% if design %} {% include "dashboard/design/design_element.html" %} {% endif %}
+</div>
+</li>
+{% endif %}

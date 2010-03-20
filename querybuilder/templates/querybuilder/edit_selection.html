@@ -1,0 +1,65 @@
+{% extends "querybuilder/index.html" %}
+
+{% block content %}
+{% if request.session.return_url %}
+ <a href='{{ request.session.return_url }}'>Back</a>
+{% endif %}
+ <a href='/querybuilder/'>Query builder home</a>
+
+<div id="edit_selection_tabs" class='ui-tabs'>
+<ul>
+<li id='edit_selection_form_tab'><a href='#edit_selection_form'><span>Data selection form</span></a></li>
+<li id='edit_selection_columns_tab'><a href='#edit_selection_columns'><span>Data columns</span></a></li>
+<li id='edit_selection_result_tab'><a href='#edit_selection_result'><span>Data queries &amp; results</span></a></li>
+</ul>
+
+<div id='edit_selection_form'>
+<form method="POST">
+<table>
+  {{ form.as_table }}
+</table>
+  <input type="submit" value="Submit" />
+</form>
+</div>
+
+<div id='edit_selection_columns'>
+<ul>
+{% for col in selection.get_columns %}
+<li>{{ col }} <a href='{% url edit_column selection.id,col.id %}'>edit</a></li>
+{% endfor %}
+</ul>
+<a href='{% url add_column selection.id %}'>add column</a>
+</div>
+
+<div id='edit_selection_result'>
+<strong>Data queries</strong>
+<p>
+SQL:
+</p>
+<p>
+{{ explain }}
+</p>
+<p>
+Python:
+</p>
+<p>
+{{ as_python|linebreaksbr }}
+</p>
+<br />
+{% if data_error %}
+  {{ data_error }}
+{% else %}
+  {% include "querybuilder/view_data_table_edit.html" %}
+{% endif %}
+</div>
+
+</div> {% comment %} div tabs {% endcomment %}
+
+<script type="text/javascript">
+$(function() { 
+  $("#edit_selection_tabs").tabs(); 
+});
+</script>
+
+{% endblock %}
+

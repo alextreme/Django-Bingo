@@ -1,0 +1,55 @@
+{% extends "dashboard/index.html" %}
+
+{% block csscontent %}
+.apply_button { height: 0px; display: none; }
+.add_button { height: 0px; display: none; }
+{% endblock %}
+
+{% block jscontent %}
+{% comment %} Put stuff in here that isn't used when in design-mode {% endcomment %}
+var design = false;
+{% endblock %}
+
+{% block content %}
+{% if dashboards %}
+<div id="tabs" class='ui-tabs'>
+<ul>
+{% for dashboard in dashboards %}
+<li id='dashboard-{{dashboard.id}}-tab'><a href='#dashboard-{{dashboard.id}}'><span>{{ dashboard }}</span></a></li>
+{% endfor %}
+</ul>
+{% for dashboard in dashboards %}
+<div id="dashboard-{{dashboard.id}}">
+{% include "dashboard/dashboard.html" %}
+</div>
+{% endfor %}
+</div>
+{% else %}
+<div id="no_dashboards">
+<strong>No dashboards found!</strong>
+</div>
+{% endif %}
+
+<div id="footer">
+{% if user.is_superuser %}
+{% ifequal mode "view" %}
+ <a href='{% url dashboard.views.design %}'>design mode</a>
+{% else %}
+ <a href='{% url dashboard.views.index %}'>view mode</a>
+ <a href='{% url dashboard.views.add_dashboard %}'>add dashboard</a>
+{% endifequal %}
+{% endif %}
+
+{% if user.is_authenticated %}
+ <a style='float: right;' href='{% url django.contrib.auth.views.logout_then_login %}'>logout</a>
+{% endif %}
+
+</div>
+
+<script type="text/javascript">
+$(function() { 
+  $("#tabs").tabs(); 
+});
+</script>
+
+{% endblock %}

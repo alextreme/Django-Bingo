@@ -1,0 +1,20 @@
+<div class='header'>
+<strong>Data</strong>
+</div>
+<ul>
+<li><a href='{% url export_selection selection.id %}'>Export to Excel</a></li>
+</ul>
+<div class='data_table'>
+<table>
+{% for data_row in data %}
+<tr>
+   <td>{{ data_row }}</td>
+</tr>
+{% endfor %}
+{% if max_data_exceeded %}
+  <tr><td>... (breaking off, too many rows to display)</td></tr>
+{% endif %}
+</table>
+
+</div>
+

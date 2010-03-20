@@ -1,0 +1,49 @@
+@import 'columns.css';
+
+body {
+        background: #EEEEEE;
+        font-family: Arial, Helvetica;
+        font-size: 9pt;
+}
+
+.top_bar {
+        width: 100%;
+        background: #417690;
+        padding: 5px 0px 5px 0px;
+        height: 30px;
+}
+
+.title a {
+        color: #edee7a;
+        font-size: 18pt;
+        padding: 0;
+        margin: 0;
+        margin-left: 1em;
+        font-weight: bold;
+        text-decoration: none;
+}
+
+a.link {
+        color: black;
+        font-size: 11pt;
+        text-decoration: underline;
+}
+
+.footer {
+        color: #cccccc;
+        margin-top: 1em;
+        font-size: smaller;
+}
+
+.ui-tabs .ui-tabs-hide { // off-left hack, makes sure element sizes are calculated
+	position: absolute;
+	left: -10000px;
+}
+
+.threshold {
+	padding-right: 4px;
+}
+
+#apply_button {
+	float: right;
+}

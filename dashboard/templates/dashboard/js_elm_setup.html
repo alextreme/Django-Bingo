@@ -1,0 +1,24 @@
+{% if dashboard %}
+$('#dashboard-{{dashboard.id}}-tab a').click(function() { {% comment %} Load element when the user opens the dashboard {% endcomment %}
+  show_element_{{elm.id}}();
+});
+{% endif %}
+
+{% ifequal forloop.parentloop.counter 1 %} {% comment %} Load all elements on the first dashboard automatically {% endcomment %}
+$(document).ready(function() {
+  show_element_{{elm.id}}();
+});
+{% endifequal %}
+
+{% ifequal mode 'design' %} {% comment %} Element design/edit mode {% endcomment %}
+$('#edit_element_view_tab a').click(function() {
+  show_element_{{elm.id}}();
+});
+{% endifequal %}
+
+{% ifequal mode 'element' %} {% comment %} Single-element / view-element mode, when you click on an element {% endcomment %}
+$(document).ready(function() {
+  design = false;
+  show_element_{{elm.id}}();
+});
+{% endifequal %}

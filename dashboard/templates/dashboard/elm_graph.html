@@ -1,0 +1,53 @@
+<div id="dashboard_graph_{{ elm.id}}" class="dashboard_graph" style="{% if elm.height %}height: {{elm.height}}px;{% endif %}background: white; height: 300px; width: {% if dashboard %}{{ dashboard.get_element_width }}px{%else%}100%{%endif%};"></div>
+
+<script type="text/javascript">
+{% include "dashboard/js_elm_setup.html" %}
+
+function show_element_{{ elm.id }}() {
+  show_graph_{{ elm.id }}();
+}
+
+function show_graph_{{ elm.id }}() {
+{% with elm.get_child as graph %}
+
+var options = { 
+
+  // NOTE: Actual point/line options are sent with the JSON data for the graph, we only define these for in graph.js
+  {% if graph.show_lines %}  lines: { show: true }, {% endif %}
+  {% if graph.show_points %} points: { show: true },{% endif %}
+  {% if graph.show_bars %}   bars: { show: true },  {% endif %}
+
+  {% if graph.y_axis.get_thresholds %}
+    grid: { markings: [ 
+      {% for threshold in graph.y_axis.get_thresholds %}
+        { yaxis: { {% if threshold.thres_from %}from: {{ threshold.thres_from }} {% if threshold.thres_to %},{% endif %}{% endif %}
+	         {% if threshold.thres_to %}to: {{ threshold.thres_to }}{% endif %}
+		 }, color: {% ifequal threshold.thres_level 0 %}"#ffffff"{% endifequal %}{% ifequal threshold.thres_level 1 %}"#f6ff79"{% endifequal %}{% ifequal threshold.thres_level 2 %}"#fe594d"{% endifequal %}
+	}
+     {% if not forloop.last %},{% endif %}{% endfor %}
+     ] },
+  {% endif %}
+  
+  {% with graph.x_axis.get_child as x_axis %}
+    axes: { xaxis: { {% ifequal x_axis.get_type "datetime" %} renderer: $.jqplot.DateAxisRenderer, tickOptions: { formatString: '{{ x_axis.get_datetime_format }}' } {% endifequal %}}, {% if graph.y_axis_from_zero %}yaxis: {min: 0} {% endif %} },
+  {% endwith %}
+
+  {% if graph.legend %}
+  legend: { show: true, location: "nw", rowSpacing: '0.05em' }
+  {% else %}
+  legend: { show: false }
+  {% endif %}
+}; {% comment %} End options {% endcomment %}
+
+{% endwith %}
+    {% include "dashboard/js_elm_urls.html" %}
+    $("#dashboard_graph_{{ elm.id }}").click(function() { location.href = click_url });
+    try {
+      plot_graph($("#dashboard_graph_{{ elm.id }}"), [], url, options, {{ elm.refresh_rate }}, {{ elm.id }});
+    }
+    catch (error){
+      // not on this tab
+    }
+    return true; // required for tabsselect, not sure if this is required for tabsshow though...
+}
+</script>

@@ -1,0 +1,14 @@
+{% extends "dashboard/main.html" %}
+
+{% block content %}
+<strong>{% if edit_tablecolumn %}Edit table column{% else %}Adding new table column{% endif %}</strong><br />
+
+<form method="POST">
+
+ <table>
+ {{ form }}
+ </table>
+
+  <input type="submit" value="Submit" />
+</form>
+{% endblock %}
