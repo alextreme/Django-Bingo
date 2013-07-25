@@ -21,14 +21,14 @@
 {% ifequal mode "design" %}
  <div style='padding-top: 4px; clear: both;'> <!-- make sure these are below all floating elements -->
   <input class='apply_button button' type='button' name='apply' value='Apply layout'/>
-  <input class='add_button button' type='button' name='add_element' value='Add element' onclick='location.href="{% url dashboard.views.add_element dashboard.id %}"'/>
+  <input class='add_button button' type='button' name='add_element' value='Add element' onclick='location.href="{% url 'dashboard.views.add_element' dashboard.id %}"'/>
   {% if dashboard.active %}
-    <input class='hide_button button' type='button' name='disable dashboard' value='Hide dashboard' onclick='location.href="{% url dashboard.views.hide_dashboard dashboard.id %}/"'/>
+    <input class='hide_button button' type='button' name='disable dashboard' value='Hide dashboard' onclick='location.href="{% url 'dashboard.views.hide_dashboard' dashboard.id %}/"'/>
   {% else %}
-    <input class='show_button button' type='button' name='enable dashboard' value='Show dashboard' onclick='location.href="{% url dashboard.views.show_dashboard dashboard.id %}/"'/>
+    <input class='show_button button' type='button' name='enable dashboard' value='Show dashboard' onclick='location.href="{% url 'dashboard.views.show_dashboard' dashboard.id %}/"'/>
   {% endif %}
 {% comment %}  {% ifequal dashboard.get_total_elements|length 0 %} {% endcomment %}
-    <input class='init_button button' type='button' name='init dashboard' value='Initialize dashboard from application' onclick='location.href="{% url dashboard.views.init_dashboard dashboard.id %}"'/>
+    <input class='init_button button' type='button' name='init dashboard' value='Initialize dashboard from application' onclick='location.href="{% url 'dashboard.views.init_dashboard' dashboard.id %}"'/>
 {% comment %}  {% endifequal %} {% endcomment %}
  </div>
 {% endifequal %}
@@ -42,7 +42,7 @@
       var data_left = $("#column_left_{{dashboard.id}}").sortable("serialize");
       var data_middle = $("#column_middle_{{dashboard.id}}").sortable("serialize");
       var data_right = $("#column_right_{{dashboard.id}}").sortable("serialize");
-      $.post("{% url dashboard.views.apply_layout dashboard.id %}/", {'left': data_left, 'middle': data_middle, 'right': data_right });
+      $.post("{% url 'dashboard.views.apply_layout' dashboard.id %}/", {'left': data_left, 'middle': data_middle, 'right': data_right });
   });
 
 </script>
