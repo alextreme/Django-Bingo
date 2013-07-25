@@ -1,7 +1,7 @@
-<a href="{% url dashboard.views.edit_element elm.id %}">Edit</a>
+<a href="{% url 'dashboard.views.edit_element' elm.id %}">Edit</a>
 {% if elm.active %}
-<a href="{% url dashboard.views.hide_element elm.id %}">Hide</a>
+<a href="{% url 'dashboard.views.hide_element' elm.id %}">Hide</a>
 {% else %}
-<a href="{% url dashboard.views.show_element elm.id %}">Show</a>
+<a href="{% url 'dashboard.views.show_element' elm.id %}">Show</a>
 {% endif %}
-<a style='float: right;' href="{% url dashboard.views.delete_element elm.id %}">Delete</a>
+<a style='float: right;' href="{% url 'dashboard.views.delete_element' elm.id %}">Delete</a>
